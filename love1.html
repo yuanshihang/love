@@ -66,7 +66,74 @@
     <script>
         //window.alert("我是不是你最爱的人啊！！！")；
     </script>
+    <script>
+        var arr = [
+        "images/subball1.png",
+        "images/subball2.png",
+        "images/subball3.png",
+        "images/subball4.png",
+        "images/subball5.png",
+        "images/subball6.png",
+        "images/subball7.png",
+        "images/subball8.png"
+    ];
 
+    function Star(src, x, y, width) {
+        this.src = src;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.image = function() {
+            var img = new Image();
+            //var img=document.createElement("img");
+            img.src = this.src;
+            img.style.width = this.width + "px";
+            img.style.height = this.width + "px";
+            img.style.left = this.x + "px";
+            img.style.top = this.y + "px";
+            img.style.opacity = 1;
+            document.body.appendChild(img);
+
+            var num = 0;
+            var flag1 = (Math.random() < 0.3) ? -1 : 1;
+            var flag2 = (Math.random() < 0.3) ? -1 : 1;
+            var pathX = flag1 * Math.random() * 3; //图片出现水平范围
+            var pathY = flag2 * Math.random() * 3; //图片出现垂直范围
+            var time = setInterval(function() {
+                img.style.left = img.offsetLeft + pathX + "px";
+                img.style.top = img.offsetTop + pathY + "px";
+                num++;
+                if (num > 10) {
+                    clearInterval(time);
+                    var t = setInterval(function() { //img自动向下走的过程中消失
+                        if (img.style.opacity <= 0) {
+                            clearInterval(t);
+                            img.parentNode.removeChild(img);
+                            return false;
+                        }
+                        img.style.opacity -= 0.4;
+                        img.style.top = img.offsetTop + 2 + "px";
+                    }, 50);
+                }
+            }, 50);
+        };
+    }
+
+    document.body.onmousemove = function(event) {
+        var distance = Math.floor(Math.sqrt(event.movementX * event.movementX + event.movementY * event.movementY));
+        if (distance % 2 == 0) {
+            for (var i = 0; i < 3; i++) {
+                var src = arr[Math.floor(Math.random() * arr.length)];
+                var x = event.clientX - 5;
+                var y = event.clientY + 5;
+                var sign = (Math.random() < 0.5) ? 0 : 1;
+                var width = 20 + sign * 10;
+                var Image = new Star(src, x, y, width);
+                Image.image();
+            }
+        }
+    }
+    </script>
     <script>
     
     (function(){
